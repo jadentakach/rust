@@ -4,7 +4,7 @@ use std::{
     net::{TcpListener, TcpStream}
 };
 
-fn build_response(status_code: u16, page: &str) -> String {
+fn build_response(status_code: &str, page: &str) -> String {
     let status: String = format!("HTTP/1.1 {}", status_code);
     let contents: String = fs::read_to_string(page).unwrap();
     let length: usize = contents.len();
@@ -19,10 +19,10 @@ fn handle_connection(mut stream: TcpStream) {
     let request_line = buf_reader.lines().next().unwrap().unwrap();
 
     if request_line == "GET / HTTP/1.1" {
-        let response = build_response(200, "index.html");
+        let response = build_response("200 OK", "index.html");
         stream.write_all(response.as_bytes()).unwrap();
     } else {
-        let response = build_response(404, "404.html");
+        let response = build_response("404 NOT FOUND", "404.html");
         stream.write_all(response.as_bytes()).unwrap();
     }
     
