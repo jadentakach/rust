@@ -26,59 +26,61 @@ fn new_entry(title: String, course: Course, description: String, due_date: Strin
     }
 }
 
+fn get_input(output: &str) -> String {
+    let mut input: String = String::new();
+    
+    println!("{}", output);
+    std::io::stdin().read_line(&mut input).expect("Failed to read input");
+    return input.trim().to_string();
+}
+
+fn add_homework(entries: &mut Vec<HomeworkEntry>) {
+    let title: String = get_input("Enter the title of the homework:");
+    let course_input: String = get_input("Enter the course by shorthand:\nCulinary Arts: CA\nAnatomy Physiology: AP\nBusiness of Sports: BS\nEnglish Writing: EW\nPsychology: PS\nCivics: CV\nBaking: BK\nPrecalculus: PC");
+    let description: String = get_input("Enter the description of the homework:");
+    let due_date: String = get_input("Enter the due date of the homework:");
+
+    let course: Course = match course_input.trim() {
+        "CA" => Course::CulinaryArts,
+        "AP" => Course::AnatomyPhysiology,
+        "BS" => Course::BusinessOfSports,
+        "EW" => Course::EnglishWriting,
+        "PS" => Course::Psychology,
+        "CV" => Course::Civics,
+        "BK" => Course::Baking,
+        "PC" => Course::Precalculus,
+
+        _ => {
+            println!("Invalid course entered. Defaulting to CulinaryArts.");
+            Course::CulinaryArts
+        }
+    };
+
+    let entry: HomeworkEntry = new_entry(title.trim().to_string(), course, description.trim().to_string(), due_date.trim().to_string());
+    entries.push(entry);
+}
+
+fn view_homework(entries: &Vec<HomeworkEntry>) {
+    for entry in entries {
+        println!("Title: {}, Course: {:?}, Description: {}, Due Date: {}", entry.title, entry.course, entry.description, entry.due_date);
+    }
+}
 fn main() {
     let mut homework_entries: Vec<HomeworkEntry> = Vec::new();
 
     loop {
-        let mut input: String = String::new();
+        let input: String = get_input("Do you want to..\n1. Add a new homework entry\n2. View all homework entries\n3. Exit");
 
-        println!("Do you want to..\n1. Add a new homework entry\n2. View all homework entries\n3. Exit");
-        std::io::stdin().read_line(&mut input).expect("Failed to read input"); 
-
-        match input.as_str().trim() {
+        match input.as_str() {
             "1" => {
-                let mut title: String = String::new();
-                let mut course_input: String = String::new();
-                let mut description: String = String::new();
-                let mut due_date: String = String::new();
-
-                println!("Enter the title of the homework:");
-                std::io::stdin().read_line(&mut title).expect("Failed to read input");
-
-                println!("Enter the course by shorthand:\nCulinary Arts: CA\nAnatomy Physiology: AP\nBusiness of Sports: BS\nEnglish Writing: EW\nPsychology: PS\nCivics: CV\nBaking: BK\nPrecalculus: PC");
-                std::io::stdin().read_line(&mut course_input).expect("Failed to read input");
-
-                println!("Enter the description of the homework:");
-                std::io::stdin().read_line(&mut description).expect("Failed to read input");
-
-                println!("Enter the due date of the homework:");
-                std::io::stdin().read_line(&mut due_date).expect("Failed to read input");
-
-                let course: Course = match course_input.trim() {
-                    "CA" => Course::CulinaryArts,
-                    "AP" => Course::AnatomyPhysiology,
-                    "BS" => Course::BusinessOfSports,
-                    "EW" => Course::EnglishWriting,
-                    "PS" => Course::Psychology,
-                    "CV" => Course::Civics,
-                    "BK" => Course::Baking,
-                    "PC" => Course::Precalculus,
-                    _ => {
-                        println!("Invalid course entered. Defaulting to CulinaryArts.");
-                        Course::CulinaryArts
-                    }
-                };
-
-                let entry: HomeworkEntry = new_entry(title.trim().to_string(), course, description.trim().to_string(), due_date.trim().to_string());
-                homework_entries.push(entry);
+                add_homework(&mut homework_entries);
             },
             "2" => {
-                for entry in &homework_entries {
-                    println!("Title: {}, Course: {:?}, Description: {}, Due Date: {}", entry.title, entry.course, entry.description, entry.due_date);
-                }
+                view_homework(&homework_entries);
             },
             "3" => {
                 println!("Exiting...");
+                break;
             },
             _ => {
                 println!("Invalid option selected.");

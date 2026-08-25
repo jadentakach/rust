@@ -1,0 +1,6 @@
+{
+    "rust-analyzer.server.path": null,
+    "[rust]": {
+        "editor.inlineSuggest.enabled": false
+    }
+}
