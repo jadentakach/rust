@@ -28,13 +28,20 @@ fn handle_connection(mut stream: TcpStream) {
     
 }
 
+fn get_input(prompt: &str) -> String {
+    println!("{}", prompt);
+    let mut input: String = String::new();
+
+    std::io::stdin().read_line(&mut input).expect("Failed to read input");
+    let input = input.trim();
+
+    return input.to_string();
+}
+
 fn main() {
-    println!("Preparing to start TCP server\nEnter desired port:");
+    println!("Preparing to start TCP server");
 
-    let mut port: String = String::new();
-    std::io::stdin().read_line(&mut port).expect("Failed to read port");
-
-    let port = port.trim();
+    let port: String = get_input("Enter port: ");
 
     let address: String = format!("127.0.0.1:{}", port);
     let listener: TcpListener = TcpListener::bind(&address).unwrap();
