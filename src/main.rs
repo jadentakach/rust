@@ -1,4 +1,18 @@
-use std::net::{TcpListener, TcpStream};
+use std::{
+    io::{BufReader, prelude::*},
+    net::{TcpListener, TcpStream}
+};
+
+fn handle_connection(mut stream: TcpStream) {
+    let buf_reader = BufReader::new(&stream);
+    let http_request: Vec<_> = buf_reader
+        .lines()
+        .map(|result| result.unwrap())
+        .take_while(|line| !line.is_empty())
+        .collect();
+
+    println!("Incoming Http request: {http_request:#?}");
+}
 
 fn main() {
     println!("Preparing to start TCP server\nEnter desired port:");
@@ -17,5 +31,6 @@ fn main() {
         let unwrapped: TcpStream = stream.unwrap();
 
         println!("New connection from {}", unwrapped.peer_addr().unwrap().to_string());
+        handle_connection(unwrapped);
     }
 }

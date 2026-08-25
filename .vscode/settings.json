@@ -1,5 +1,6 @@
 {
     "rust-analyzer.server.path": null,
+    "editor.inlayHints.enabled": "off",
     "[rust]": {
         "editor.inlineSuggest.enabled": false
     }
