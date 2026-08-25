@@ -11,7 +11,10 @@ fn handle_connection(mut stream: TcpStream) {
         .take_while(|line| !line.is_empty())
         .collect();
 
-    println!("Incoming Http request: {http_request:#?}");
+    // println!("Incoming Http request: {http_request:#?}"); // cool but clutters the cli
+
+    let response = "HTTP/1.1 200 OK\r\n\r\n";
+    stream.write_all(response.as_bytes()).unwrap();
 }
 
 fn main() {
