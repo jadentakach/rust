@@ -19,10 +19,10 @@ fn handle_connection(mut stream: TcpStream) {
     let request_line = buf_reader.lines().next().unwrap().unwrap();
 
     if request_line == "GET / HTTP/1.1" {
-        let response = build_response("200 OK", "index.html");
+        let response = build_response("200 OK", "pages/index.html");
         stream.write_all(response.as_bytes()).unwrap();
     } else {
-        let response = build_response("404 NOT FOUND", "404.html");
+        let response = build_response("404 NOT FOUND", "pages/404.html");
         stream.write_all(response.as_bytes()).unwrap();
     }
     
