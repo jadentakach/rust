@@ -35,10 +35,10 @@ fn main() {
 
     match input.as_str().trim() {
         "1" => {
-            let mut title = String::new();
-            let mut course_input = String::new();
-            let mut description = String::new();
-            let mut due_date = String::new();
+            let mut title: String = String::new();
+            let mut course_input: String = String::new();
+            let mut description: String = String::new();
+            let mut due_date: String = String::new();
 
             println!("Enter the title of the homework:");
             std::io::stdin().read_line(&mut title).expect("Failed to read input");
@@ -52,7 +52,7 @@ fn main() {
             println!("Enter the due date of the homework:");
             std::io::stdin().read_line(&mut due_date).expect("Failed to read input");
 
-            let course = match course_input.trim() {
+            let course: Course = match course_input.trim() {
                 "CA" => Course::CulinaryArts,
                 "AP" => Course::AnatomyPhysiology,
                 "BS" => Course::BusinessOfSports,
@@ -67,7 +67,7 @@ fn main() {
                 }
             };
 
-            let entry = new_entry(title.trim().to_string(), course, description.trim().to_string(), due_date.trim().to_string());
+            let entry: HomeworkEntry = new_entry(title.trim().to_string(), course, description.trim().to_string(), due_date.trim().to_string());
             homework_entries.push(entry);
         },
         "2" => {
