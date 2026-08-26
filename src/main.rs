@@ -38,11 +38,37 @@ fn factors(int: i32) -> Vec<Vec<i32>> {
     listed_factors
 }
 
+struct Polynomial {
+    a: i32,
+    b: i32,
+    c: i32
+}
+
+impl Polynomial {
+    fn factor() -> Vec<i32> {
+        vec![0, 1] // temp
+    }
+}
+
+fn generate_polynomial(term_stack: &String) -> Polynomial {
+    let mut terms: Vec<i32> = Vec::new();
+    
+    for term in term_stack.split_whitespace() {
+        if !term.contains("+") && !term.contains("- ") {
+            let pushable_term: i32 = term.trim().parse::<i32>().unwrap();
+            terms.push(pushable_term);
+        }
+    }
+
+    Polynomial { a: terms[0], b: terms[1], c: terms[2] }
+}
+
 fn main() {
-    let mut input: String = get_input("Input number: ");
-    let int: i32 = input.trim().parse::<i32>().unwrap();
-    let b: i32 = -2;
+    let mut input: String = get_input("Input polynomial: ");
+    let polynomial: Polynomial = generate_polynomial(&input);
     input.clear();
+
+    /*
 
     println!("Factors of {}:", int);
     let factors: Vec<Vec<i32>> = factors(int);
@@ -64,4 +90,6 @@ fn main() {
     let positive: i32 = if gcf[0] > 0 { gcf[0] } else { gcf[1] };
     let negative: i32 = if gcf[0] < 0 { gcf[0] } else { gcf[1] };
     println!("(x+{})(x{})", positive, negative);
+
+    */
 }
