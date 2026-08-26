@@ -45,17 +45,20 @@ struct Polynomial {
 }
 
 impl Polynomial {
-    fn factor() -> Vec<i32> {
-        vec![0, 1] // temp
+    fn factor(self) -> Vec<i32> {
+        let c_factors: Vec<Vec<i32>> = factors(self.c);
+        let end_factor: Vec<i32> = ac_factor(self.b, c_factors);
+
+        end_factor
     }
 }
 
 fn generate_polynomial(term_stack: &String) -> Polynomial {
     let mut terms: Vec<i32> = Vec::new();
     
-    for term in term_stack.split_whitespace() {
+    for term in term_stack.trim().split_whitespace() {
         if !term.contains("+") && !term.contains("- ") {
-            let pushable_term: i32 = term.trim().parse::<i32>().unwrap();
+            let pushable_term: i32 = term.parse::<i32>().unwrap();
             terms.push(pushable_term);
         }
     }
@@ -63,10 +66,29 @@ fn generate_polynomial(term_stack: &String) -> Polynomial {
     Polynomial { a: terms[0], b: terms[1], c: terms[2] }
 }
 
+fn format_factor(factor: Vec<i32>) -> String {
+    let a = factor[0];
+    let b = factor[1];
+
+    if a > 0 && factor[1] > 0 {
+        return format!("(x+{})(x+{})", a, b);
+    } 
+
+    if a < 0 && factor[1] < 0 {
+        return format!("(x{})(x{})", a, b);
+    }
+
+    let positive: i32 = if a > 0 { a } else { b };
+    let negative: i32 = if a < 0 { a } else { b };
+
+    return format!("(x+{})(x{})", positive, negative);
+}
+
 fn main() {
-    let mut input: String = get_input("Input polynomial: ");
+    let input: String = get_input("Input polynomial: ");
     let polynomial: Polynomial = generate_polynomial(&input);
-    input.clear();
+    let factored: Vec<i32> = polynomial.factor();
+    println!("{}", format_factor(factored));
 
     /*
 
@@ -77,19 +99,7 @@ fn main() {
     }
 
     let gcf = ac_factor(b, factors);
-    if gcf[0] > 0 && gcf[1] > 0 {
-        println!("(x+{})(x+{})", gcf[0], gcf[1]);
-        return;
-    } 
-
-    if gcf[0] < 0 && gcf[1] < 0 {
-        println!("(x{})(x{})", gcf[0], gcf[1]);
-        return;
-    }
-
-    let positive: i32 = if gcf[0] > 0 { gcf[0] } else { gcf[1] };
-    let negative: i32 = if gcf[0] < 0 { gcf[0] } else { gcf[1] };
-    println!("(x+{})(x{})", positive, negative);
+    
 
     */
 }
