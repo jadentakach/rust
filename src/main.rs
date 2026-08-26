@@ -1,7 +1,7 @@
 fn get_input(prompt: &str) -> String {
     let mut input: String = String::new();
-    println!("{}", prompt);
 
+    println!("{}", prompt);
     std::io::stdin().read_line(&mut input).expect("Failed to read input");
 
     input
@@ -88,18 +88,6 @@ fn main() {
     let input: String = get_input("Input polynomial: ");
     let polynomial: Polynomial = generate_polynomial(&input);
     let factored: Vec<i32> = polynomial.factor();
+
     println!("{}", format_factor(factored));
-
-    /*
-
-    println!("Factors of {}:", int);
-    let factors: Vec<Vec<i32>> = factors(int);
-    for factor in &factors {
-        println!("[{}, {}]", factor[0], factor[1]);
-    }
-
-    let gcf = ac_factor(b, factors);
-    
-
-    */
 }
